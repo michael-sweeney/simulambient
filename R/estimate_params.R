@@ -10,7 +10,7 @@
 #'
 #' @param sample A vector of length k that provides the associated sex of each droplet in \code{dataset}.
 #'
-#' @return A list containing three values.
+#' @return A list containing two values.
 #'
 #' @export
 #'
@@ -54,43 +54,45 @@ estimate_params <- function(dataset, cellTypes = NULL, batch = NULL, sample = NU
     metadata <- c(metadata, "sample")
   }
 
-  umis <- colSums(dataset) # UMIs per sample
-  if (length(metadata) == 0) {
+  l <- length(metadata) # How many metadata parameters did the user include?
+
+  if (l == 0) {
     genedf <- rowMeans(dataset)
     names(genedf) <- rownames(dataset)
-    return(list(genes = genedf, tbl = NULL, umis = umis))
+    umis <- colSums(dataset)
+    return(list(geneMeans = genedf, umis = matrix(umis, nrow = length(umis))))
   } else {
     metadata_df <- data.frame(mget(metadata))
-    for (i in 1:ncol(metadata_df)) {
-      metadata_df[,i] <- as.factor(metadata_df[,i])
-      levels(metadata_df[,i]) <- 1:length(levels(metadata_df[,i]))
-      metadata_df[,i] <- as.numeric(levels(metadata_df[,i]))[metadata_df[,i]]
-    }
-    metadata_df <- Matrix(as.matrix(metadata_df), sparse = TRUE)
-    metadata_string <- paste(metadata, collapse = ",")
-    counts_with_metadata <- t(rbind(dataset, metadata_df))
-    counts_with_metadata <- aggregate(eval(parse(text = paste(".~", metadata_string, sep = ""))),
-                                      data = counts_with_metadata, FUN = mean)
 
-    colnames(counts_with_metadata) <- metadata # might be redundant
+    tbl <- as.data.frame(data.table(metadata_df)[, .N, by = metadata])
 
-    if (!is.null(cellTypes)) {
-      unique_cell_types <- unique(cellTypes)
-      counts_with_metadata$cellTypes <- unique_cell_types[counts_with_metadata$cellTypes]
+    if (l == 1) {
+      metadata_df_concat <- metadata_df[,1]
+      tbl_concat <- tbl[,1]
+    } else if (l == 2) {
+      metadata_df_concat <- paste(metadata_df[,1], metadata_df[,2], sep = "")
+      tbl_concat <- paste(tbl[,1], tbl[,2], sep = "")
+    } else {
+      metadata_df_concat <- paste(metadata_df[,1], metadata_df[,2], metadata_df[,3], sep = "")
+      tbl_concat <- paste(tbl[,1], tbl[,2], tbl[,3], sep = "")
     }
 
-    if (!is.null(batch)) {
-      unique_batches <- unique(batch)
-      counts_with_metadata$batch <- unique_batches[counts_with_metadata$batch]
+    genedf <- matrix(NA, ncol = nrow(tbl), nrow = eval(nrow(dataset) + l))
+    umis <- matrix(NA, ncol = nrow(tbl), nrow = eval(l + max(tbl[,eval(l+1)])))
+
+    genedf[1:l,] <- t(tbl[,1:l])
+
+    umis[1:l,] <- t(tbl[,1:l])
+
+    for (i in 1:nrow(tbl)) {
+      genedf[eval(l+1):eval(nrow(dataset) + l),i] <- rowMeans(dataset[,which(metadata_df_concat == tbl_concat[i])])
+      umiVector <- colSums(dataset[,which(metadata_df_concat == tbl_concat[i])])
+      umis[eval(l+1):eval(l+length(umiVector)),i] <- umiVector
     }
 
-    if (!is.null(sample)) {
-      unique_samples <- unique(sample)
-      counts_with_metadata$sample <- unique_samples[counts_with_metadata$sample]
-    }
+    rownames(genedf) <- c(colnames(metadata_df), rownames(dataset))
+    rownames(umis) <- c(colnames(metadata_df), as.character(1:eval(nrow(umis)-2)))
+
+    return(list(geneMeans = genedf, umis = umis))
   }
-
-  tbl <- data.table(metadata_df)[, .N, by = metadata]
-
-  return(genes = counts_with_metadata, tbl = tbl, umis = umis)
 }
