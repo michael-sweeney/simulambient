@@ -10,7 +10,7 @@
 #'
 #' @param sample A vector of length k that provides the associated sex of each droplet in \code{dataset}.
 #'
-#' @return A list containing two values.
+#' @return A list containing two values. The first value is a matrix \code{geneMeans} that lists the mean counts value for each gene (for that particular metadata, if applicable). The second value is a matrix \code{umis} that lists the UMI counts for each droplet (for that particular metadata, if applicable).
 #'
 #' @export
 #'
