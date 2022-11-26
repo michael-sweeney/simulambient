@@ -60,7 +60,7 @@ estimate_params <- function(dataset, cellTypes = NULL, batch = NULL, sample = NU
     genedf <- rowMeans(dataset)
     names(genedf) <- rownames(dataset)
     umis <- colSums(dataset)
-    return(list(geneMeans = genedf, umis = matrix(umis, nrow = length(umis))))
+    return(list(geneMeans = matrix(genedf, nrow = length(genedf)), umis = matrix(umis, nrow = length(umis))))
   } else {
     metadata_df <- data.frame(mget(metadata))
 
