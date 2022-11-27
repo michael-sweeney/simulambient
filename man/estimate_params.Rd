@@ -16,7 +16,7 @@ estimate_params(dataset, cellTypes = NULL, batch = NULL, sample = NULL)
 \item{sample}{A vector of length k that provides the associated sex of each droplet in \code{dataset}.}
 }
 \value{
-A list containing two values.
+A list containing two values. The first value is a matrix \code{geneMeans} that lists the mean counts value for each gene (for that particular metadata, if applicable). The second value is a matrix \code{umis} that lists the UMI counts for each droplet (for that particular metadata, if applicable).
 }
 \description{
 estimate_params will take a snRNA-seq dataset as input and estimate parameters for downstream analysis.
