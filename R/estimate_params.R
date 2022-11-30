@@ -2,7 +2,9 @@
 #'
 #' estimate_params will take a snRNA-seq dataset as input and estimate parameters for downstream analysis.
 #'
-#' @param dataset An n x k dataset where n = number of genes and k = number of nuclei. Assumed to be demultiplexed and cell type-annotated.
+#' @param dataset An n x k matrix-like object where n = number of genes and k = number of nuclei. Assumed to be demultiplexed and cell type-annotated.
+#'
+#' @param metadata A vector of strings corresponding to the metadata made available by the user. This argument will be handled inside the main function \code{simulambient} and is the return value of \code{check_args}.
 #'
 #' @param cellTypes A vector of length k that provides the cell type of each nucleus in \code{dataset}. If all nuclei are from one type or cell type is not to be accounted for, parameter can be left blank.
 #'
@@ -16,43 +18,14 @@
 #'
 #' @import Matrix
 #' @import data.table
+#' @import methods
 
-estimate_params <- function(dataset, cellTypes = NULL, batch = NULL, sample = NULL) {
+estimate_params <- function(dataset, metadata = NULL, cellTypes = NULL, batch = NULL, sample = NULL) {
 
-  dataset <- as(dataset, "CsparseMatrix") # Convert data to sparse format
+  dataset <- methods::as(dataset, "CsparseMatrix") # Convert data to sparse format (although it already should be... might take this out)
 
   num_genes <- nrow(dataset) # How many genes did the user provide in their dataset?
   num_nuclei <- ncol(dataset) # How many nuclei did the user provide in their dataset?
-  metadata <- c() # Vector of strings. Could contain none, "cellTypes", "batch", "sex", or any combination depending on metadata provided by the user.
-
-  # Throw error if genes aren't named.
-  if (is.null(rownames(dataset))) {
-    stop("Single-nucleus data should have row names to identify genes. Please attribute gene names to data before continuing.")
-  }
-
-  # Throw error if user provides cell type information but cell type labels aren't same length as number of nuclei.
-  if (!is.null(cellTypes)) {
-    if (length(cellTypes) != num_nuclei) {
-      stop("Each nucleus should be assigned to a cell type. The cell type metadata does not match the number of nuclei.")
-    }
-    metadata <- c(metadata, "cellTypes")
-  }
-
-  # Throw error if user provides batch effect information but batch labels aren't same length as number of nuclei.
-  if (!is.null(batch)) {
-    if (length(batch) != num_nuclei) {
-      stop("Each nucleus should be assigned to a batch. The batch metadata does not match the number of nuclei.")
-    }
-    metadata <- c(metadata, "batch")
-  }
-
-  # Throw error if user provides sample information but labels aren't same length as number of nuclei.
-  if (!is.null(sample)) {
-    if (length(sample) != num_nuclei) {
-      stop("Each nucleus should be assigned to a sample. The sample metadata does not match the number of nuclei.")
-    }
-    metadata <- c(metadata, "sample")
-  }
 
   l <- length(metadata) # How many metadata parameters did the user include?
 
@@ -65,7 +38,7 @@ estimate_params <- function(dataset, cellTypes = NULL, batch = NULL, sample = NU
 
     metadata_df <- data.frame(mget(metadata)) # Make dataframe of metadata objects
 
-    tbl <- as.data.frame(data.table(metadata_df)[, .N, by = metadata]) # Going to iterate over all unique permutations of metadata combinations
+    tbl <- as.data.frame(data.table::data.table(metadata_df)[, .N, by = metadata]) # Going to iterate over all unique permutations of metadata combinations
 
     # Point of this if/else switch is to find droplets in dataset corresponding to particular metadata permutation
     if (l == 1) { # One of cellTypes, batch, sample provided

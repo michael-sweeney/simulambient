@@ -4,10 +4,18 @@
 \alias{estimate_params}
 \title{Estimate Parameters from Dataset}
 \usage{
-estimate_params(dataset, cellTypes = NULL, batch = NULL, sample = NULL)
+estimate_params(
+  dataset,
+  metadata = NULL,
+  cellTypes = NULL,
+  batch = NULL,
+  sample = NULL
+)
 }
 \arguments{
-\item{dataset}{An n x k dataset where n = number of genes and k = number of nuclei. Assumed to be demultiplexed and cell type-annotated.}
+\item{dataset}{An n x k matrix-like object where n = number of genes and k = number of nuclei. Assumed to be demultiplexed and cell type-annotated.}
+
+\item{metadata}{A vector of strings corresponding to the metadata made available by the user. This argument will be handled inside the main function \code{simulambient} and is the return value of \code{check_args}.}
 
 \item{cellTypes}{A vector of length k that provides the cell type of each nucleus in \code{dataset}. If all nuclei are from one type or cell type is not to be accounted for, parameter can be left blank.}
 
