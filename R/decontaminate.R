@@ -10,6 +10,8 @@
 #'
 #' @param batch A vector of length k corresponding to batch information of the nuclei in \code{dataset}.
 #'
+#' @param bgBatch A vector of length j corresponding to batch information of the ambient mRNA droplets in \code{contamination}.
+#'
 #' @param ... Any extra parameters passed to DecontX.
 #'
 #' @return A sparse matrix of class dgCMatrix with the decontaminated counts for the experiment.
@@ -18,8 +20,8 @@
 #'
 #' @import celda
 
-decontaminate <- function(dataset, contamination = NULL, cellTypes = NULL, batch = NULL) {
-  decontaminated_object <- celda::decontX(x = dataset, background = contamination, z = cellTypes, batch = batch, ...)
+decontaminate <- function(dataset, contamination = NULL, cellTypes = NULL, batch = NULL, bgBatch = NULL, ...) {
+  decontaminated_object <- celda::decontX(x = dataset, background = contamination, z = cellTypes, batch = batch, bgBatch = bgBatch, verbose = FALSE, ...)
   return(decontaminated_object$decontXcounts)
 }
 
