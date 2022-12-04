@@ -1,8 +1,14 @@
+#' Simulate snRNA-seq Counts with Negative Binomial
 #'
+#' simulate_counts simulates snRNA-seq counts given parameters for the negative binomial.
 #'
+#' @param geneMeans Matrix-like object of gene expression means for each metadata group. (Rows = genes, columns = metadata groups)
 #'
+#' @param geneSDs Matrix-like object of gene expression standard devitaitons for each metadata group. (Rows = genes, column = metadata groups)
 #'
+#' @param numNucleiPerGroup Vector of integers correpsonding to how many nuclei need to be simulated within each metadata group.
 #'
+#' @param seed Seed for random number generation. Can be set by the user. Defaults to 615.
 #'
 #' @export
 #'
@@ -13,12 +19,12 @@ simulate_counts <- function(geneMeans, geneSDs, numNucleiPerGroup, seed) {
 
   set.seed(seed)
 
-  tol <- 1e-10 # Small value to add to avoid NAs
+  tol <- 1e-10 # Small value to add to avoid NAs/NaNs
 
   num_genes <- nrow(geneMeans)
   num_groups <- ncol(geneMeans)
 
-  geneCVs <- ((geneSDs + tol) / geneMeans)^2
+  geneCVs <- ((geneSDs + tol) / geneMeans)^2 # Calculate
 
   outputMatrix <- NULL
 

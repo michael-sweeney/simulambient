@@ -4,7 +4,14 @@
 \alias{decontaminate}
 \title{Simulambient DecontX Wrapper}
 \usage{
-decontaminate(dataset, contamination = NULL, cellTypes = NULL, batch = NULL)
+decontaminate(
+  dataset,
+  contamination = NULL,
+  cellTypes = NULL,
+  batch = NULL,
+  bgBatch = NULL,
+  ...
+)
 }
 \arguments{
 \item{dataset}{An n x k matrix-like object where n = number of genes and k = number of nuclei to be decontaminated.}
@@ -14,6 +21,8 @@ decontaminate(dataset, contamination = NULL, cellTypes = NULL, batch = NULL)
 \item{cellTypes}{A vector of length k correpsonding to the cell types of the nuclei in \code{dataset}.}
 
 \item{batch}{A vector of length k corresponding to batch information of the nuclei in \code{dataset}.}
+
+\item{bgBatch}{A vector of length j corresponding to batch information of the ambient mRNA droplets in \code{contamination}.}
 
 \item{...}{Any extra parameters passed to DecontX.}
 }

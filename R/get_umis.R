@@ -1,3 +1,24 @@
+#' Calculate Pre-DecontX Counts
+#'
+#' get_umis will get the pre-DecontX counts for each nucleus so that the scaling factor for Simulambient can be computed.
+#'
+#' @param dataset An n x k matrix-like object where n = number of genes and k = number of nuclei. Assumed to be demultiplexed and cell type-annotated.
+#'
+#' @param metadata A vector of strings corresponding to the metadata made available by the user. This argument will be handled inside the main function \code{simulambient} and is the return value of \code{check_args}.
+#'
+#' @param cellTypes A vector of length k that provides the cell type of each nucleus in \code{dataset}. If all nuclei are from one type or cell type is not to be accounted for, parameter can be left blank.
+#'
+#' @param sex A vector of length k that provides the associated sex of each droplet in \code{dataset}.
+#'
+#' @return A list containing four values. The first value is a matrix \code{geneMeans} that lists the mean counts value for each gene (for that particular metadata, if applicable). The second value is a matrix \code{geneMeans} that lists the standad deviation for each gene (for that particular metadata, if applicable). The third value is a matrix \code{umis} that lists the UMI counts for each droplet (for that particular metadata, if applicable). The fourth value is a matrix-like object that holds the metadata correpsonding to the columns/rows of the other returned objects.
+#'
+#' @export
+#'
+#' @import Matrix
+#' @import matrixStats
+#' @import data.table
+#' @import methods
+
 get_umis <- function(dataset, metadata = NULL, cellTypes = NULL, sex = NULL) {
   dataset <- methods::as(dataset, "CsparseMatrix") # Convert data to sparse format (although it already should be... might take this out)
 
