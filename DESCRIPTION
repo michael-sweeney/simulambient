@@ -1,10 +1,21 @@
 Package: simulambient
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Simulating snRNA-seq Counts with Varying Levels of Ambient mRNA Contamination
+Version: 1.0.0.0000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    c(person(given = "Michael",
+           family = "Sweeney",
+           role = c("aut", "cre"),
+           email = "mikeswny@umich.edu",
+           comment = c(ORCID = "0000-0002-6288-6703")),
+    person(given = "Andre",
+           family = "Guerra",
+           role = "aut",
+           email = "aaguerra@umich.edu")),
+    person(given = "Cheukying Rosita",
+           family = "Szeto",
+           role = "aut",
+           email = "cszeto@umich.edu"))
+Description: Simulambient takes a snRNA-seq dataset and simulambients snRNA-seq datasets with varying levels of ambient mRNA contamination. Simulambient first separates native counts from ambient counts using DecontX, simulates native and ambient counts using negative binomial, and then scales the ambient mRNA contamination to the user's preference. This package is intended for genomics data analysts who wish to test developed methods on varying levels of contamination.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
