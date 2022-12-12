@@ -7,10 +7,10 @@
 check_args(
   dataset,
   contamination = NULL,
+  metadata = NULL,
   cellTypes = NULL,
   batch = NULL,
-  bgBatch = NULL,
-  sex = NULL
+  bgBatch = NULL
 )
 }
 \arguments{
@@ -18,16 +18,16 @@ check_args(
 
 \item{contamination}{An n x j matrix-like object where n = number of genes and j = number of ambient mRNA droplets. The droplets in this matrix are believed to be by the user to be composed of ambient mRNA. Including droplets beneath a specific UMI cutoff (i.e. 100) is a basic idea to get ambient mRNA droplets.}
 
-\item{cellTypes}{A vector of length k that provides the cell type of each nucleus in \code{dataset}. If all nuclei are from one type or cell type is not to be accounted for, parameter can be left blank.}
+\item{metadata}{A matrix with k rows that corresponds to metadata of the k nuclei provided in \code{dataset}. Each column should represent a different aspect of metadata, i.e. sex, cell types, etc.}
+
+\item{cellTypes}{A vector of length k should cell type information not be provided in \code{metadata}. If it is provided, this parameter should be a string of the column name that represents the cell type information in \code{metadata}. If cell type information is not desired to be included, default is NULL.}
 
 \item{batch}{A vector of length k that provides the batch of the nucleus in \code{dataset}. If there is no batch effect, parameter can be left blank.}
 
 \item{bgBatch}{A vector of length j corresponding to batch information of the ambient mRNA droplets in \code{contamination}.}
-
-\item{sex}{A vector of length k that provides the associated sex of each droplet in \code{dataset}.}
 }
 \value{
-A list of strings containing the valid metadata provided by the user.
+Validated metadata provided by the user.
 }
 \description{
 check_args will take any cellTypes, batch, and sex arguments provided by the user and check them for validity.

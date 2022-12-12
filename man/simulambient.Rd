@@ -8,10 +8,10 @@ simulambient(
   dataset,
   contamination_levels = 1,
   contamination = NULL,
+  metadata = NULL,
   cellTypes = NULL,
   batch = NULL,
   bgBatch = NULL,
-  sex = NULL,
   seed = 615,
   ...
 )
@@ -23,13 +23,13 @@ simulambient(
 
 \item{contamination}{An n x j matrix-like object where n = number of genes and j = number of ambient mRNA droplets. The droplets in this matrix are believed to be by the user to be composed of ambient mRNA. Including droplets beneath a specific UMI cutoff (i.e. 100) is a basic idea to get ambient mRNA droplets.}
 
-\item{cellTypes}{A vector of length k that provides the cell type of each nucleus in \code{dataset}. If all nuclei are from one type or cell type is not to be accounted for, parameter can be left blank.}
+\item{metadata}{A matrix with k rows that corresponds to metadata of the k nuclei provided in \code{dataset}. Please see \code{cellTypes}, \code{batch}, and \code{bgBatch}. Each column should represent a different aspect of metadata, i.e. sex. It should be noted that the user should be rather parsimonious when choosing which metadata to include. Including too many parameters will increase the number of metadata permutations, which will increase runtime and potentially "overfit" the simulations. Cell types is strongly recommended, anything else is up to the user's discretion.}
 
-\item{batch}{A vector of length k that provides the batch of the nucleus in \code{dataset}. If there is no batch effect, parameter can be left blank. This parameter must be provided if \code{bgBatch} is provided (as required by DecontX).}
+\item{cellTypes}{A vector of length k should cell type information not be provided in \code{metadata}. If it is provided, this parameter should be a string of the column name that represents the cell type information in \code{metadata}. If cell type information is not desired to be included, default is NULL.}
+
+\item{batch}{A vector of length k that provides the batch of the nucleus in \code{dataset}. If there is no batch effect, parameter can be left blank. This parameter must be provided if \code{bgBatch} is provided (as required by DecontX). Please do not include batch information in the \code{metadata} parameter.}
 
 \item{bgBatch}{A vector of length j corresponding to batch information of the ambient mRNA droplets in \code{contamination}. This parameter must be provided if \code{batch} is provided (as required by DecontX).}
-
-\item{sex}{A vector of length k that provides the associated sex of each droplet in \code{dataset}.}
 
 \item{seed}{Seed for random number generation. Can be set by the user. Defaults to 615.}
 

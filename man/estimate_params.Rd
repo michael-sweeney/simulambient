@@ -4,19 +4,17 @@
 \alias{estimate_params}
 \title{Estimate Parameters from Dataset}
 \usage{
-estimate_params(dataset, metadata = NULL, cellTypes = NULL, sex = NULL)
+estimate_params(dataset, metadata = NULL, metadata_indices = NULL)
 }
 \arguments{
 \item{dataset}{An n x k matrix-like object where n = number of genes and k = number of nuclei. Assumed to be demultiplexed and cell type-annotated.}
 
-\item{metadata}{A vector of strings corresponding to the metadata made available by the user. This argument will be handled inside the main function \code{simulambient} and is the return value of \code{check_args}.}
+\item{metadata}{A matrix containing metadata information provided by the user. Has k rows.}
 
-\item{cellTypes}{A vector of length k that provides the cell type of each nucleus in \code{dataset}. If all nuclei are from one type or cell type is not to be accounted for, parameter can be left blank.}
-
-\item{sex}{A vector of length k that provides the associated sex of each droplet in \code{dataset}.}
+\item{metadata_indices}{A vector informing which nuclei belong to which metadata group.}
 }
 \value{
-A list containing four values. The first value is a matrix \code{geneMeans} that lists the mean counts value for each gene (for that particular metadata, if applicable). The second value is a matrix \code{geneMeans} that lists the standad deviation for each gene (for that particular metadata, if applicable). The third value is a matrix \code{umis} that lists the UMI counts for each droplet (for that particular metadata, if applicable). The fourth value is a matrix-like object that holds the metadata correpsonding to the columns/rows of the other returned objects.
+A list containing two values: a matrix with mean gene expression for each metadata group, and
 }
 \description{
 estimate_params will take a snRNA-seq dataset as input and estimate parameters for downstream analysis.

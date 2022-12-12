@@ -9,8 +9,6 @@ simulate_counts(geneMeans, geneSDs, numNucleiPerGroup, seed)
 \arguments{
 \item{geneMeans}{Matrix-like object of gene expression means for each metadata group. (Rows = genes, columns = metadata groups)}
 
-\item{geneSDs}{Matrix-like object of gene expression standard devitaitons for each metadata group. (Rows = genes, column = metadata groups)}
-
 \item{numNucleiPerGroup}{Vector of integers correpsonding to how many nuclei need to be simulated within each metadata group.}
 
 \item{seed}{Seed for random number generation. Can be set by the user. Defaults to 615.}
