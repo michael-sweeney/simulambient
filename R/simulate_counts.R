@@ -4,8 +4,6 @@
 #'
 #' @param geneMeans Matrix-like object of gene expression means for each metadata group. (Rows = genes, columns = metadata groups)
 #'
-#' @param geneSDs Matrix-like object of gene expression standard devitaitons for each metadata group. (Rows = genes, column = metadata groups)
-#'
 #' @param numNucleiPerGroup Vector of integers correpsonding to how many nuclei need to be simulated within each metadata group.
 #'
 #' @param seed Seed for random number generation. Can be set by the user. Defaults to 615.
@@ -19,17 +17,18 @@ simulate_counts <- function(geneMeans, geneSDs, numNucleiPerGroup, seed) {
 
   set.seed(seed)
 
-  tol <- 1e-10 # Small value to add to avoid NAs/NaNs
+  tol <- 1e-10
 
   num_genes <- nrow(geneMeans)
   num_groups <- ncol(geneMeans)
 
-  geneCVs <- ((geneSDs + tol) / geneMeans)^2 # Calculate
+  geneCVs <- ((geneSDs + tol) / geneMeans)^2
 
   outputMatrix <- NULL
 
   for (i in 1:num_groups) {
     df <- data.frame(geneMeans[,i], geneCVs[,i])
+    # function_simulate <- function(x) stats::rpois(numNucleiPerGroup[i], lambda = x)
     function_simulate <- function(x, y) stats::rnbinom(numNucleiPerGroup[i], mu = x, size = y)
     if (numNucleiPerGroup[i] == 1) {
       counts <- Matrix(mapply(function_simulate, df[,1], df[,2]), sparse = TRUE)
