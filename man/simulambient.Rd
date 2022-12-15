@@ -35,6 +35,9 @@ simulambient(
 
 \item{...}{Any extra parameters passed to DecontX from the \code{celda} package.}
 }
+\value{
+A sparse matrix or a list of sparse matrices containing simulated data. Note that simulated matrices have the same metadata as the input matrix. For example, for an input matrix and metadata with the first column belonging to a female of cell type A, the first column of the output matrix/matrices will belong to a female of cell type A.
+}
 \description{
 simulambient is the main function of the package. It calls the helper functions to simulate snRNA-seq counts with varying levels of contamination.
 }

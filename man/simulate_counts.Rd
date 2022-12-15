@@ -13,6 +13,9 @@ simulate_counts(geneMeans, geneSDs, numNucleiPerGroup, seed)
 
 \item{seed}{Seed for random number generation. Can be set by the user. Defaults to 615.}
 }
+\value{
+A sparse matrix of size n x k corresponding to the native counts belonging to each simulated nucleus.
+}
 \description{
 simulate_counts simulates snRNA-seq counts given parameters for the negative binomial.
 }
