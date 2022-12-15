@@ -8,6 +8,8 @@
 #'
 #' @param seed Seed for random number generation. Can be set by the user. Defaults to 615.
 #'
+#' @return A sparse matrix of size n x k corresponding to the native counts belonging to each simulated nucleus.
+#'
 #' @export
 #'
 #' @import stats

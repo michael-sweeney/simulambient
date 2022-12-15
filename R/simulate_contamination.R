@@ -4,11 +4,13 @@
 #'
 #' @param geneMeans Matrix-like object of ambient mRNA gene expression means for each metadata group. (Rows = genes, columns = metadata groups)
 #'
-#' @param numCounts A vector of length j corresponding to the contamination counts needed for each nucleus.
+#' @param numCounts A vector of length k corresponding to the contamination counts needed for each nucleus.
 #'
-#' @param batch A vector of length j corresponding to batch information of the ambient mRNA droplets in \code{contamination}.
+#' @param batch A vector of length k corresponding to batch information of the ambient mRNA droplets in the nucleus \code{dataset}.
 #'
 #' @param seed Seed for random number generation. Can be set by the user. Defaults to 615.
+#'
+#' @return A sparse matrix of size n x k corresponding to the contamination counts to be added to each simulated nucleus.
 #'
 #' @export
 #'

@@ -18,8 +18,6 @@
 
 estimate_params <- function(dataset, metadata = NULL, metadata_indices = NULL) {
 
-  dataset <- methods::as(dataset, "CsparseMatrix") # Convert data to sparse format (although it already should be... might take this out)
-
   num_genes <- nrow(dataset) # How many genes did the user provide in their dataset?
   num_nuclei <- ncol(dataset) # How many nuclei did the user provide in their dataset?
 

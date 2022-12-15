@@ -20,6 +20,8 @@
 #'
 #' @param ... Any extra parameters passed to DecontX from the \code{celda} package.
 #'
+#' @return A sparse matrix or a list of sparse matrices containing simulated data. Note that simulated matrices have the same metadata as the input matrix. For example, for an input matrix and metadata with the first column belonging to a female of cell type A, the first column of the output matrix/matrices will belong to a female of cell type A.
+#'
 #' @export
 #'
 #' @import stats

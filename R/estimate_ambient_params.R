@@ -16,8 +16,6 @@
 
 estimate_ambient_params <- function(contamination, bgBatch = NULL) {
 
-  contamination <- methods::as(contamination, "CsparseMatrix") # Convert data to sparse format (although it already should be... might take this out)
-
   num_genes <- nrow(contamination) # How many genes did the user provide in their dataset?
 
   if (is.null(bgBatch)) { # Metadata-free case. Get rowMeans and UMIs per droplet and return.

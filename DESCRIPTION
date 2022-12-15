@@ -10,7 +10,7 @@ Authors@R:
     person(given = "Andre",
            family = "Guerra",
            role = "aut",
-           email = "aaguerra@umich.edu")),
+           email = "aaguerra@umich.edu"),
     person(given = "Cheukying Rosita",
            family = "Szeto",
            role = "aut",
