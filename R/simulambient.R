@@ -34,7 +34,7 @@ simulambient <- function(dataset, contamination_levels = 1, contamination = NULL
 
   message("Checking arguments for validity...")
 
-  metadata <- check_args(dataset = dataset, contamination = contamination, metadata = metadata, cellTypes = cellTypes, batch = batch, bgBatch = bgBatch)
+  metadata <- check_args(dataset = dataset, contamination_levels = contamination_levels, contamination = contamination, metadata = metadata, cellTypes = cellTypes, batch = batch, bgBatch = bgBatch)
 
   message("Handling metadata permutations...")
 
