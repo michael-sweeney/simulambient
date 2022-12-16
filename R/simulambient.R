@@ -25,6 +25,7 @@
 #' @export
 #'
 #' @import stats
+#' @import sparseMatrixStats
 
 
 simulambient <- function(dataset, contamination_levels = 1, contamination = NULL, metadata = NULL, cellTypes = NULL, batch = NULL, bgBatch = NULL, seed = 615, ...) {
@@ -57,15 +58,15 @@ simulambient <- function(dataset, contamination_levels = 1, contamination = NULL
 
     preDecontX_umis <- colSums(dataset)[metadata_indices_sorted] # NOW IN METADATA ORDER
   } else {
-    metadata_indices_sorted <- 1:ncol(datset)
-    metadata_indices_original <- 1:ncol(datset)
+    metadata_indices_sorted <- 1:ncol(dataset)
+    metadata_indices_original <- 1:ncol(dataset)
     num_nuclei_per_metadata_group <- c(ncol(dataset))
-    preDecontX_umis <- colSums(dataset)
+    preDecontX_umis <- sparseMatrixStats::colSums2(dataset)
   }
 
   message("Removing genes with no expression...")
 
-  expressed_genes <- which(rowSums(dataset) > 0)
+  expressed_genes <- which(sparseMatrixStats::rowSums2(dataset) > 0)
   dataset <- dataset[expressed_genes,]
   if (!is.null(contamination)) {
     contamination <- contamination[expressed_genes,]
@@ -81,7 +82,7 @@ simulambient <- function(dataset, contamination_levels = 1, contamination = NULL
 
   decontaminated_counts <- decontaminate(dataset, contamination, cellTypes, batch, bgBatch, ...)
 
-  postDecontX_umis <- colSums(decontaminated_counts)[metadata_indices_sorted] # NOW IN METADATA ORDER
+  postDecontX_umis <- sparseMatrixStats::colSums2(decontaminated_counts)[metadata_indices_sorted] # NOW IN METADATA ORDER
 
   ## STEP 2: ESTIMATE PARAMETERS
 
@@ -106,7 +107,7 @@ simulambient <- function(dataset, contamination_levels = 1, contamination = NULL
 
   message("Applying nuclei-specific scale factors...")
 
-  scaling_factor <- postDecontX_umis / colSums(counts)
+  scaling_factor <- postDecontX_umis / sparseMatrixStats::colSums2(counts)
   scaling_factor[!is.finite(scaling_factor)] <- 0
 
   counts <- t(t(counts) * scaling_factor)
@@ -138,6 +139,8 @@ simulambient <- function(dataset, contamination_levels = 1, contamination = NULL
       scaling_factor[!is.finite(scaling_factor)] <- 0
       scaling_factor[scaling_factor < 0] <- 0
       counts_temp <- t(t(counts) * scaling_factor)
+    } else {
+      counts_temp <- counts
     }
 
     final_matrix <- counts_temp + contamination_counts
