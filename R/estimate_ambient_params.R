@@ -21,7 +21,7 @@ estimate_ambient_params <- function(contamination, bgBatch = NULL) {
     genedf <- sparseMatrixStats::rowSums2(contamination) # Mean expression per gene
     names(genedf) <- rownames(contamination)
     return(matrix(genedf, nrow = num_genes))
-  } else {
+  } else { # We want to have different ambient profiles for different batches, should the user provide that information.
     batches <- unique(bgBatch)
     num_batches <- length(batches)
     genedf <- matrix(NA, ncol = num_batches, nrow = nrow(contamination))

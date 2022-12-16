@@ -30,7 +30,7 @@ simulate_counts <- function(geneMeans, geneSDs, numNucleiPerGroup, seed = 615) {
 
   for (i in 1:num_groups) {
     df <- data.frame(geneMeans[,i], geneCVs[,i])
-    # function_simulate <- function(x) stats::rpois(numNucleiPerGroup[i], lambda = x)
+    # function_simulate <- function(x) stats::rpois(numNucleiPerGroup[i], lambda = x) --> Leftover from Poisson attempt
     function_simulate <- function(x, y) stats::rnbinom(numNucleiPerGroup[i], mu = x, size = y)
     if (numNucleiPerGroup[i] == 1) {
       counts <- Matrix(mapply(function_simulate, df[,1], df[,2]), sparse = TRUE)

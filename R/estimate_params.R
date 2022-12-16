@@ -27,7 +27,7 @@ estimate_params <- function(dataset, metadata = NULL, metadata_indices = NULL) {
     sddf <- sparseMatrixStats::rowSds(dataset) # Mean expression per gene
     names(genedf) <- rownames(dataset)
     return(list(geneMeans = matrix(genedf, nrow = num_genes), geneSDs = matrix(sddf, nrow = num_genes)))
-  } else {
+  } else { # We want different mean and standard deviation gene expression for each metadata group.
     permutations <- unique(metadata_indices)
     num_permutations <- length(permutations)
     genedf <- matrix(NA, ncol = num_permutations, nrow = nrow(dataset))
