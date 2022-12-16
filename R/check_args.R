@@ -35,8 +35,10 @@ check_args <- function(dataset, contamination = NULL, metadata = NULL, cellTypes
     }
   }
 
-  if (!all(rownames(dataset) == rownames(contamination))) {
-    stop("Ambient mRNA droplet data should have the exact same genes as the single-nucleus data. Droplets from the same 10X experiment should have the same genes (in features.tsv). If there are differences between the single-nucleus data and the ambient mRNA profile, it should be manually updated by the user such that the row names of these two matrices are the same. Row names must be in the same order.")
+  if (!is.null(contamination)) {
+    if (!all(rownames(dataset) == rownames(contamination))) {
+      stop("Ambient mRNA droplet data should have the exact same genes as the single-nucleus data. Droplets from the same 10X experiment should have the same genes (in features.tsv). If there are differences between the single-nucleus data and the ambient mRNA profile, it should be manually updated by the user such that the row names of these two matrices are the same. Row names must be in the same order.")
+    }
   }
 
   # Throw error if user provides cell type information but metadata length differs from number of nuclei.
