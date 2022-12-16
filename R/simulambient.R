@@ -41,20 +41,27 @@ simulambient <- function(dataset, contamination_levels = 1, contamination = NULL
   # metadata_indices_sorted --> Used to sort user-input dataset to organize it so metadata groups are next to each other
   # metadata_indices_original --> If we sort the user-input dataset, we use this to "unsort" it and get back to original order.
 
-  metadata_tbl <- unique(metadata) # Get unique permutations
-  metadata_indices <- match(do.call(paste, data.frame(metadata)), do.call(paste, data.frame(metadata_tbl))) # Assign each nucleus to its metadata permutation
+  if (!is.null(metadata)) {
+    metadata_tbl <- unique(metadata) # Get unique permutations
+    metadata_indices <- match(do.call(paste, data.frame(metadata)), do.call(paste, data.frame(metadata_tbl))) # Assign each nucleus to its metadata permutation
 
-  metadata_sort_df <- data.frame(metadata_indices, 1:length(metadata_indices))
-  metadata_indices_sorted <- metadata_sort_df[order(metadata_sort_df[,1]),]
-  metadata_indices_sorted_df <- data.frame(metadata_indices_sorted, 1:nrow(metadata_indices_sorted))
-  metadata_indices_sorted <- metadata_indices_sorted[,2]
+    metadata_sort_df <- data.frame(metadata_indices, 1:length(metadata_indices))
+    metadata_indices_sorted <- metadata_sort_df[order(metadata_sort_df[,1]),]
+    metadata_indices_sorted_df <- data.frame(metadata_indices_sorted, 1:nrow(metadata_indices_sorted))
+    metadata_indices_sorted <- metadata_indices_sorted[,2]
 
-  metadata_indices_sorted_df <- metadata_indices_sorted_df[order(metadata_indices_sorted_df[,2]),]
-  metadata_indices_original <- metadata_indices_sorted_df[,3]
+    metadata_indices_sorted_df <- metadata_indices_sorted_df[order(metadata_indices_sorted_df[,2]),]
+    metadata_indices_original <- metadata_indices_sorted_df[,3]
 
-  num_nuclei_per_metadata_group <- as.data.frame(table(metadata_indices))[,2]
+    num_nuclei_per_metadata_group <- as.data.frame(table(metadata_indices))[,2]
 
-  preDecontX_umis <- colSums(dataset)[metadata_indices_sorted] # NOW IN METADATA ORDER
+    preDecontX_umis <- colSums(dataset)[metadata_indices_sorted] # NOW IN METADATA ORDER
+  } else {
+    metadata_indices_sorted <- 1:ncol(datset)
+    metadata_indices_original <- 1:ncol(datset)
+    num_nuclei_per_metadata_group <- c(ncol(dataset))
+    preDecontX_umis <- colSums(dataset)
+  }
 
   message("Removing genes with no expression...")
 
