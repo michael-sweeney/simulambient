@@ -25,8 +25,9 @@ estimate_ambient_params <- function(contamination, bgBatch = NULL) {
     batches <- unique(bgBatch)
     num_batches <- length(batches)
     genedf <- matrix(NA, ncol = num_batches, nrow = nrow(contamination))
-    for (i in batches) {
-      genedf[,i] <- sparseMatrixStats::rowSums2(contamination[,which(bgBatch == i)])
+    rownames(genedf) <- rownames(contamination)
+    for (i in 1:length(batches)) {
+      genedf[,i] <- sparseMatrixStats::rowSums2(contamination[,which(bgBatch == batches[i])])
     }
     result <- matrix(genedf, nrow = num_genes)
     colnames(result) <- as.character(batches)
