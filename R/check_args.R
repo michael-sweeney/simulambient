@@ -29,8 +29,10 @@ check_args <- function(dataset, contamination = NULL, metadata = NULL, cellTypes
     stop("Single-nucleus data should have row names to identify genes. Please attribute gene names to data before continuing.")
   }
 
-  if (is.null(rownames(contamination))) {
-    stop("Ambient mRNA droplet data should have row names to identify genes. Please attribute gene names to data before continuing.")
+  if (!is.null(contamination)) {
+    if (is.null(rownames(contamination))) {
+      stop("Ambient mRNA droplet data should have row names to identify genes. Please attribute gene names to data before continuing.")
+    }
   }
 
   if (!all(rownames(dataset) == rownames(contamination))) {
