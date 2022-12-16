@@ -6,6 +6,7 @@
 \usage{
 check_args(
   dataset,
+  contamination_levels,
   contamination = NULL,
   metadata = NULL,
   cellTypes = NULL,
@@ -15,6 +16,8 @@ check_args(
 }
 \arguments{
 \item{dataset}{An n x k matrix-like object where n = number of genes and k = number of nuclei to be decontaminated.}
+
+\item{contamination_levels}{A numeric value or a vector of numeric values indicating the desired levels of contamination that the user would like to simulate. A value of 1 indicates the user wants to simulate the level of contamination detected in the input dataset; a value of 0.5 indicates that the user wants to simulate half of the contamination detected in the original dataset, etc.}
 
 \item{contamination}{An n x j matrix-like object where n = number of genes and j = number of ambient mRNA droplets. The droplets in this matrix are believed to be by the user to be composed of ambient mRNA. Including droplets beneath a specific UMI cutoff (i.e. 100) is a basic idea to get ambient mRNA droplets.}
 
