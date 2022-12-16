@@ -14,7 +14,7 @@ estimate_params(dataset, metadata = NULL, metadata_indices = NULL)
 \item{metadata_indices}{A vector informing which nuclei belong to which metadata group.}
 }
 \value{
-A list containing two values: a matrix with mean gene expression for each metadata group, and
+A list containing two values: a matrix \code{geneMeans} with mean gene expression for each gene for each metadata group, and a matrix \code{geneSDs} with the standard deviation gene expression for each gene in each metadata group.
 }
 \description{
 estimate_params will take a snRNA-seq dataset as input and estimate parameters for downstream analysis.

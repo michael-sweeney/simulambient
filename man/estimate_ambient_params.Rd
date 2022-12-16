@@ -12,7 +12,7 @@ estimate_ambient_params(contamination, bgBatch = NULL)
 \item{bgBatch}{A vector of length j corresponding to batch information of the ambient mRNA droplets in \code{contamination}.}
 }
 \value{
-A list containing two values. The first value is a matrix \code{geneMeans} that lists the mean counts value for each gene (for that particular metadata, if applicable). The second value is a matrix \code{geneMeans} that lists the standad deviation for each gene (for that particular metadata, if applicable).
+A matrix with the unnormalized psuedobulk of the ambient profile to be used by the Multinomial distribution to simulate ambient counts.
 }
 \description{
 estimate_ambient_params will take a snRNA-seq contamination dataset as input and estimate parameters for downstream analysis.

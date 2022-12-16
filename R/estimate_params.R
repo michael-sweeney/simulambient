@@ -8,13 +8,12 @@
 #'
 #' @param metadata_indices A vector informing which nuclei belong to which metadata group.
 #'
-#' @return A list containing two values: a matrix with mean gene expression for each metadata group, and
+#' @return A list containing two values: a matrix \code{geneMeans} with mean gene expression for each gene for each metadata group, and a matrix \code{geneSDs} with the standard deviation gene expression for each gene in each metadata group.
 #'
 #' @export
 #'
 #' @import Matrix
 #' @import matrixStats
-#' @import methods
 
 estimate_params <- function(dataset, metadata = NULL, metadata_indices = NULL) {
 

@@ -6,13 +6,12 @@
 #'
 #' @param bgBatch A vector of length j corresponding to batch information of the ambient mRNA droplets in \code{contamination}.
 #'
-#' @return A list containing two values. The first value is a matrix \code{geneMeans} that lists the mean counts value for each gene (for that particular metadata, if applicable). The second value is a matrix \code{geneMeans} that lists the standad deviation for each gene (for that particular metadata, if applicable).
+#' @return A matrix with the unnormalized psuedobulk of the ambient profile to be used by the Multinomial distribution to simulate ambient counts.
 #'
 #' @export
 #'
 #' @import Matrix
 #' @import sparseMatrixStats
-#' @import methods
 
 estimate_ambient_params <- function(contamination, bgBatch = NULL) {
 
