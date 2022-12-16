@@ -17,7 +17,7 @@
 #' @import stats
 #' @import Matrix
 
-simulate_contamination <- function(geneMeans, numCounts, batch = NULL, seed) {
+simulate_contamination <- function(geneMeans, numCounts, batch = NULL, seed = 615) {
 
   set.seed(seed)
   numNuclei <- length(numCounts)

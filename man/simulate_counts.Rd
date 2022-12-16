@@ -4,7 +4,7 @@
 \alias{simulate_counts}
 \title{Simulate snRNA-seq Counts with Negative Binomial}
 \usage{
-simulate_counts(geneMeans, geneSDs, numNucleiPerGroup, seed)
+simulate_counts(geneMeans, geneSDs, numNucleiPerGroup, seed = 615)
 }
 \arguments{
 \item{geneMeans}{Matrix-like object of gene expression means for each metadata group. (Rows = genes, columns = metadata groups)}

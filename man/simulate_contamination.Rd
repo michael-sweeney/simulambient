@@ -4,7 +4,7 @@
 \alias{simulate_contamination}
 \title{Simulate snRNA-seq Contamination with Multinomial Distribution}
 \usage{
-simulate_contamination(geneMeans, numCounts, batch = NULL, seed)
+simulate_contamination(geneMeans, numCounts, batch = NULL, seed = 615)
 }
 \arguments{
 \item{geneMeans}{Matrix-like object of ambient mRNA gene expression means for each metadata group. (Rows = genes, columns = metadata groups)}

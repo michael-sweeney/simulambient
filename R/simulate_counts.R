@@ -15,7 +15,7 @@
 #' @import stats
 #' @import Matrix
 
-simulate_counts <- function(geneMeans, geneSDs, numNucleiPerGroup, seed) {
+simulate_counts <- function(geneMeans, geneSDs, numNucleiPerGroup, seed = 615) {
 
   set.seed(seed)
 
