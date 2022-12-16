@@ -33,8 +33,13 @@ estimate_params <- function(dataset, metadata = NULL, metadata_indices = NULL) {
     genedf <- matrix(NA, ncol = num_permutations, nrow = nrow(dataset))
     sddf <- matrix(NA, ncol = num_permutations, nrow = nrow(dataset))
     for (i in permutations) {
-      genedf[,i] <- sparseMatrixStats::rowMeans2(dataset[,which(metadata_indices == i)])
-      sddf[,i] <- sparseMatrixStats::rowSds(dataset[,which(metadata_indices == i)])
+      if (length(which(metadata_indices == i)) == 1) {
+        genedf[,i] <- dataset[,which(metadata_indices == i)]
+        sddf[,i] <- 0
+      } else {
+        genedf[,i] <- sparseMatrixStats::rowMeans2(dataset[,which(metadata_indices == i)])
+        sddf[,i] <- sparseMatrixStats::rowSds(dataset[,which(metadata_indices == i)])
+      }
     }
     return(list(geneMeans = matrix(genedf, nrow = num_genes), geneSDs = matrix(sddf, nrow = num_genes)))
   }
