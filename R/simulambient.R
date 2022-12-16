@@ -108,7 +108,12 @@ simulambient <- function(dataset, contamination_levels = 1, contamination = NULL
 
   message("Estimating ambient mRNA droplets gene expression profile...")
 
-  contamination_params <- estimate_ambient_params(contamination = contamination, bgBatch = bgBatch)
+  if (!is.null(contamination)) {
+    contamination_params <- estimate_ambient_params(contamination = contamination, bgBatch = bgBatch)
+  } else {
+    contamination_params <- estimate_ambient_params(contamination = dataset, bgBatch = bgBatch)
+    # If no contamination reference is provided, you're just going to pull random contamination counts proportional to the observed data, which is suboptimal.
+  }
 
   ## STEP 6: ADD DESIRED CONTAMINATION LEVELS TO GROUND TRUTH DATA
 
@@ -121,10 +126,12 @@ simulambient <- function(dataset, contamination_levels = 1, contamination = NULL
     contamination_counts <- simulate_contamination(geneMeans = contamination_params, numCounts = contamination_to_add_vector, batch = batch, seed = seed)
 
     # Scale down ground truth counts to account for UMI displacement
-    scaling_factor <- (preDecontX_umis - contamination_to_add_vector) / colSums(counts)
-    scaling_factor[!is.finite(scaling_factor)] <- 0
-    scaling_factor[scaling_factor < 0] <- 0
-    counts_temp <- t(t(counts) * scaling_factor)
+    if (contamination_levels[i] > 1) {
+      scaling_factor <- (preDecontX_umis - contamination_to_add_vector) / colSums(counts)
+      scaling_factor[!is.finite(scaling_factor)] <- 0
+      scaling_factor[scaling_factor < 0] <- 0
+      counts_temp <- t(t(counts) * scaling_factor)
+    }
 
     final_matrix <- counts_temp + contamination_counts
     final_matrix <- round(final_matrix)
